@@ -21,6 +21,9 @@ public:
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
+	// Called every frame
+	virtual void Tick(float DeltaTime) override;
+
 private:
 
 	UPROPERTY(VisibleAnywhere)
@@ -28,5 +31,15 @@ private:
 
 	UPROPERTY(VisibleAnywhere)
 	class UCameraComponent* FollowCamera;
+
+	void Move(float Value);
+	void Turn(float Value);
+	void RotateTurret(float Value);
+
+	UPROPERTY(EditAnywhere)
+	float Speed = 200.f;
+
+	UPROPERTY(EditAnywhere)
+	float TurnRate = 200.f;
 	
 };

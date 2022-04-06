@@ -5,6 +5,8 @@
 #include "GameFramework/PlayerInput.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/InputComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 ATank::ATank()
 {
@@ -13,6 +15,17 @@ ATank::ATank()
 
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	FollowCamera->SetupAttachment(SpringArm);
+
+	
+}
+
+// Called every frame
+void ATank::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+
+	
+
 }
 
 
@@ -23,10 +36,39 @@ static void InitializedMappings()
 
 	UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping(TEXT("Turn"), EKeys::D, 1.f));
 	UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping(TEXT("Turn"), EKeys::A, -1.f));
+
+	UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping(TEXT("RotateTurret"), EKeys::MouseX, 1.f));
+
+
 }
 // Called to bind functionality to input
 void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
+	InitializedMappings();
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
+	check(PlayerInputComponent);
+
+	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ATank::Move);
+	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ATank::Turn);
+
+}
+
+void ATank::Move(float Value)
+{
+	FVector DeltaLocation{ 0.f };
+	float DeltaSeconds = UGameplayStatics::GetWorldDeltaSeconds(this);
+	DeltaLocation.X = Value * DeltaSeconds * Speed;
+	AddActorLocalOffset(DeltaLocation, true);
+}
+
+void ATank::Turn(float Value)
+{
+	FRotator DeltaRotation{ 0.f };
+	DeltaRotation.Yaw = Value * UGameplayStatics::GetWorldDeltaSeconds(this) * TurnRate;
+	AddActorLocalRotation(DeltaRotation, true);
+}
+
+void ATank::RotateTurret(float Value)
+{
 
 }
