@@ -15,9 +15,13 @@ public:
 	// Sets default values for this pawn's properties
 	ABasePawn();
 
+
+
 protected:
 
 	void RotateTurret(FVector LookAtTarget);
+
+	void Fire();
 
 private:
 
@@ -33,7 +37,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "WarComponents", meta = (AllowPrivateAccess = "true"))
 	USceneComponent* ProjectileSpawnPoint;
 
-public:	
+	UPROPERTY(EditDefaultsOnly, Category = "Combat")
+	TSubclassOf<class AProjectile> ProjectileClass;
+	
 	
 
 	

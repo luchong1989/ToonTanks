@@ -53,7 +53,8 @@ static void InitializedMappings()
 	UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping(TEXT("Turn"), EKeys::D, 1.f));
 	UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping(TEXT("Turn"), EKeys::A, -1.f));
 
-	UPlayerInput::AddEngineDefinedAxisMapping(FInputAxisKeyMapping(TEXT("RotateTurret"), EKeys::MouseX, 1.f));
+
+	UPlayerInput::AddEngineDefinedActionMapping(FInputActionKeyMapping(TEXT("Fire"), EKeys::LeftMouseButton));
 
 
 }
@@ -66,6 +67,8 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAxis(TEXT("MoveForward"), this, &ATank::Move);
 	PlayerInputComponent->BindAxis(TEXT("Turn"), this, &ATank::Turn);
+
+	PlayerInputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &ATank::Fire);
 
 }
 
