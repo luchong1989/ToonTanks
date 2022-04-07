@@ -24,6 +24,10 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+protected:
+	// Called when the game starts or when spawned
+	virtual void BeginPlay() override;
+
 private:
 
 	UPROPERTY(VisibleAnywhere)
@@ -34,12 +38,14 @@ private:
 
 	void Move(float Value);
 	void Turn(float Value);
-	void RotateTurret(float Value);
+	
 
 	UPROPERTY(EditAnywhere)
 	float Speed = 200.f;
 
 	UPROPERTY(EditAnywhere)
 	float TurnRate = 200.f;
+
+	APlayerController* PlayerControllerRef;
 	
 };

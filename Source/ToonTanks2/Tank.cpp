@@ -8,6 +8,7 @@
 #include "Components/InputComponent.h"
 #include "Kismet/GameplayStatics.h"
 
+
 ATank::ATank()
 {
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
@@ -19,12 +20,27 @@ ATank::ATank()
 	
 }
 
+
+
+// Called when the game starts or when spawned
+void ATank::BeginPlay()
+{
+	Super::BeginPlay();
+
+	PlayerControllerRef = Cast<APlayerController>(GetController()); 
+}
+
 // Called every frame
 void ATank::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	
+	if (PlayerControllerRef)
+	{
+		FHitResult HitResult;
+		PlayerControllerRef->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, HitResult);
+		RotateTurret(HitResult.ImpactPoint);
+	}
 
 }
 
@@ -68,7 +84,3 @@ void ATank::Turn(float Value)
 	AddActorLocalRotation(DeltaRotation, true);
 }
 
-void ATank::RotateTurret(float Value)
-{
-
-}
